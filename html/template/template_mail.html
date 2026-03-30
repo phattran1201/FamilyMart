@@ -1,0 +1,339 @@
+<!doctype html>
+<?
+// Nếu contentConfig được truyền từ Apps Script, dùng nó.
+// Nếu không (khi render preview), dùng config mặc định
+if (typeof contentConfig === 'undefined' || contentConfig === null) {
+  contentConfig = {
+    // Tiêu đề email - hiển thị cả trong subject và title-bar
+    mail_title: '[FAMILYMART] KHẢO SÁT LÝ DO',
+    // Đoạn mở đầu - lời chào và ngữ cảnh
+    intro_1: 'Cảm ơn bạn đã quan tâm và tham gia vào quy trình tuyển dụng của FamilyMart. Chúng mình rất mong được lắng nghe phản hồi của bạn về các khó khăn gặp phải.',
+    // Đoạn thứ hai - gợi ý hành động
+    intro_2: 'Để giúp FamilyMart hiểu rõ hơn về các vấn đề của bạn và cải thiện quy trình tuyển dụng, chúng mình rất mong bạn dành chút thời gian hoàn thành khảo sát ngắn dưới đây:',
+    // Nhãn cho link khảo sát
+    survey_label: 'Link KHẢO SÁT LÝ DO',
+    // URL link khảo sát
+    survey_url: 'https://www.facebook.com/TuyendungFamilyMartVietnam',
+    // URL hình QR
+    qr_image: 'https://github.com/phattran1201/FamilyMart/blob/main/qr/FB-TuyendungFamilyMartVietnam.png?raw=true'
+  };
+}
+
+// CÁC THÔNG TIN CHUNG KHÔNG ĐỔI
+if (typeof metadata === 'undefined' || metadata === null) {
+  metadata = {
+    header_image: 'https://github.com/phattran1201/FamilyMart/blob/main/banner/bia_fb_tks.png?raw=true',
+    hotline: '0797 487 866',
+    facebook_url: 'https://www.facebook.com/TuyendungFamilyMartVietnam',
+    tiktok_url: 'https://www.tiktok.com/@familymartvietnamcareers',
+    instagram_url: 'https://www.instagram.com/familymartvietnamcareers',
+    website_url: 'https://www.famima.vn/tuyen-dung',
+    zalo_url: 'https://zalo.me/1129484523367736973',
+    footer_note: 'Bạn nhận được email này vì đã ứng tuyển Nhân viên cửa hàng của FamilyMart.'
+  };
+}
+
+var recipientName = (typeof nameCV !== 'undefined' && nameCV) ? nameCV + ',' : '';
+?>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>
+    <?= contentConfig.mail_title ?>
+  </title>
+  <style>
+    body,
+    table,
+    td,
+    p,
+    a {
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+    }
+
+    table,
+    td {
+      border-collapse: collapse;
+    }
+
+    img {
+      -ms-interpolation-mode: bicubic;
+      border: 0;
+      outline: none;
+      text-decoration: none;
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100% !important;
+      height: 100% !important;
+      font-family: Aptos, Arial, Helvetica, sans-serif;
+      background-color: #f6f6f6;
+      color: #333333;
+    }
+
+    .wrapper {
+      width: 100%;
+      background-color: #f6f6f6;
+      table-layout: fixed;
+      padding: 16px 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+    }
+
+    .title-bar {
+      background-color: #009f41;
+      color: #ffffff;
+      text-align: center;
+      font-size: 18px;
+      line-height: 1.5;
+      padding: 14px 16px;
+      font-weight: 700;
+    }
+
+    .content {
+      padding: 20px;
+      font-size: 15px;
+      line-height: 1.7;
+      color: #333333;
+    }
+
+    .content p {
+      margin: 0 0 14px;
+    }
+
+    .name {
+      color: #008cd6;
+      font-weight: 700;
+    }
+
+    .survey-link {
+      color: #008cd6;
+      text-decoration: underline;
+      font-weight: 700;
+      font-size: 14px;
+      word-break: break-word;
+    }
+
+    .qr-wrap {
+      text-align: center;
+      padding: 8px 0 16px;
+    }
+
+    .separator {
+      border-top: 1px solid #d9d9d9;
+      margin: 0 20px;
+    }
+
+    .hotline {
+      text-align: center;
+      font-size: 18px;
+      line-height: 1.4;
+      padding: 16px 20px 20px;
+      font-weight: 700;
+    }
+
+    .hotline a {
+      color: #333333;
+      text-decoration: none;
+    }
+
+    .footer {
+      background-color: #4c9ee0;
+      text-align: center;
+      padding: 18px 16px 20px;
+      color: #ffffff;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .footer p {
+      margin: 0 0 12px;
+      color: #ffffff;
+    }
+
+    .social-table {
+      margin: 0 auto 12px;
+    }
+
+    .social-table td {
+      padding: 0 6px;
+    }
+
+    .social-table a {
+      display: inline-block;
+    }
+
+    @media screen and (max-width: 600px) {
+      .wrapper {
+        padding: 0;
+      }
+
+      .container {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+
+      .title-bar {
+        font-size: 16px;
+        padding: 12px 12px;
+      }
+
+      .content {
+        padding: 16px 14px;
+        font-size: 15px;
+        line-height: 1.65;
+      }
+
+      .separator {
+        margin: 0 14px;
+      }
+
+      .hotline {
+        padding: 14px;
+        font-size: 17px;
+      }
+
+      .footer {
+        padding: 16px 12px 18px;
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" class="wrapper">
+    <tr>
+      <td align="center">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" class="container">
+          <tr>
+            <td>
+              <a target="_blank" href="<?= metadata.facebook_url ?>">
+                <img src="<?= metadata.header_image ?>" alt="FamilyMart tuyển dụng"
+                                    title="FamilyMart tuyển dụng" width="600" height="228">
+              </a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="title-bar">
+              <?= contentConfig.mail_title ?>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="content">
+              <p>❤️ FamilyMart xin chào <span class="name">
+                                    <?= recipientName ?>
+                                </span></p>
+
+              <p>
+                <?= contentConfig.intro_1 ?>
+              </p>
+
+              <p>
+                <?= contentConfig.intro_2 ?>
+              </p>
+
+              <p>
+                ➜ <a class="survey-link" target="_blank" href="<?= contentConfig.survey_url ?>">
+                  <?= contentConfig.survey_label ?>
+                </a>
+              </p>
+
+              <p><strong>Hoặc quét mã QR để tham gia khảo sát:</strong></p>
+
+              <div class="qr-wrap">
+                <a target="_blank" href="<?= contentConfig.survey_url ?>">
+                  <img src="<?= contentConfig.qr_image ?>" alt="QR khảo sát FamilyMart"
+                                        title="QR khảo sát FamilyMart" width="150" height="150" style="margin: 0 auto;">
+                </a>
+              </div>
+
+              <p>
+                Thông tin bạn cung cấp sẽ được bảo mật và chỉ phục vụ cho mục đích cải thiện quy trình
+                tuyển dụng của
+                FamilyMart.
+              </p>
+
+              <p>
+                <em><strong>Nếu bạn vẫn muốn gia nhập gia đình FamilyMart, đừng ngần ngại liên hệ qua
+                                        các kênh bên
+                                        dưới.</strong></em> Chúng mình rất mong nhận được phản hồi và trân trọng cảm ơn
+                sự đóng góp của
+                bạn.
+              </p>
+
+              <p><span class="name"><strong>FamilyMart cảm ơn, hẹn gặp lại bạn!</strong></span></p>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <div class="separator"></div>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="hotline">
+              <a target="_blank" href="tel:<?= String(metadata.hotline || '').replace(/\s+/g, '') ?>">Hotline:
+                <?= metadata.hotline ?>
+              </a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="footer">
+              <p>Liên hệ chúng tôi tại</p>
+
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" class="social-table">
+                <tr>
+                  <td><a target="_blank" href="<?= metadata.facebook_url ?>"><img width="24"
+                                                height="24"
+                                                src="https://img.icons8.com/ios-filled/50/FFFFFF/facebook-new.png"
+                                                alt="Facebook"></a></td>
+                  <td><a target="_blank" href="<?= metadata.tiktok_url ?>"><img width="24" height="24"
+                                                src="https://img.icons8.com/ios-filled/50/FFFFFF/tiktok--v1.png"
+                                                alt="TikTok"></a>
+                  </td>
+                  <td><a target="_blank" href="<?= metadata.instagram_url ?>"><img width="24"
+                                                height="24"
+                                                src="https://img.icons8.com/ios-filled/50/FFFFFF/instagram-new--v1.png"
+                                                alt="Instagram"></a>
+                  </td>
+                  <td><a target="_blank" href="<?= metadata.website_url ?>"><img width="24"
+                                                height="24"
+                                                src="https://img.icons8.com/?size=100&id=9918&format=png&color=FFFFFF"
+                                                alt="Website"></a>
+                  </td>
+                  <td><a target="_blank" href="<?= metadata.zalo_url ?>"><img width="24" height="24"
+                                                src="https://img.icons8.com/?size=100&id=82445&format=png&color=FFFFFF"
+                                                alt="Zalo"></a></td>
+                </tr>
+              </table>
+
+              <p>
+                <?= metadata.footer_note ?>
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+
+</html>

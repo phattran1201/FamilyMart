@@ -1,0 +1,12 @@
+{
+    "[html]": {
+        "editor.formatOnSave": false
+    },
+    "[javascript]": {
+        "editor.formatOnSave": false
+    },
+    "editor.formatOnSave": true,
+    "files.associations": {
+        "*.gs": "javascript"
+    }
+}
